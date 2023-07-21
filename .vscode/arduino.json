@@ -1,0 +1,8 @@
+{
+    "board": "esp32:esp32:lilygo_t_display_s3",
+    "port": "/dev/tty.usbmodem14201",
+    "programmer": "esptool",
+    "sketch": "satoffee/satoffee.ino",
+    "output": "build",
+    "configuration": "JTAGAdapter=builtin,LoopCore=1,EventsCore=1,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=dfu,UploadMode=default,PartitionScheme=app3M_fat9M_16MB,DebugLevel=none,EraseFlash=none"
+}
