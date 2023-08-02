@@ -1,7 +1,8 @@
 #pragma once
 
-void initScreen();
+void initDisplay();
 void startupScreen();
+void configModeScreen();
 void stepOneScreen();
 void stepTwoScreen();
 void stepThreeScreen();

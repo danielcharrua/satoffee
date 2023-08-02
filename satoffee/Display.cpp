@@ -11,7 +11,7 @@ int y = 160;
 extern char lnurl[200];
 char *lightningPrefix = "lightning:";
 
-void initScreen()
+void initDisplay()
 {
   tft.init();
   tft.setRotation(0);
@@ -32,6 +32,25 @@ void startupScreen()
   tft.setTextSize(2);
   tft.drawString("v0.1", x + 3, y + 115, GFXFF);
   tft.drawString("@danielpcostas", x + 1, y + 135, GFXFF);
+}
+
+// Config Mode Screen
+void configModeScreen()
+{
+  tft.fillScreen(TFT_WHITE);
+
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextSize(10);
+  tft.setTextColor(TFT_BLACK);
+  tft.drawString("C", x + 5, y - 70, GFXFF);
+
+  tft.fillRect(15, 165, 140, 135, TFT_BLACK);
+  tft.setTextDatum(ML_DATUM);
+  tft.setTextSize(3);
+  tft.setTextColor(TFT_WHITE);
+  tft.drawString("SERIAL", x - 55, y + 40, GFXFF);
+  tft.drawString("CONFIG", x - 55, y + 70, GFXFF);
+  tft.drawString("MODE", x - 55, y + 100, GFXFF);
 }
 
 // Step one
