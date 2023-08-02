@@ -5,7 +5,7 @@ build
 satoffee/debug_custom.json
 satoffee/debug.cfg
 satoffee/debug.svd
-firmware/boot_app0.bin
-firmware/satoffee.ino.bin
-firmware/satoffee.ino.bootloader.bin
-firmware/satoffee.ino.partitions.bin
+installer/firmware/boot_app0.bin
+installer/firmware/satoffee.ino.bin
+installer/firmware/satoffee.ino.bootloader.bin
+installer/firmware/satoffee.ino.partitions.bin
