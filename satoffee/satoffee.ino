@@ -1,18 +1,31 @@
+#include <WiFi.h>
 #include <WebSocketsClient.h>
 #include <OneButton.h>
+#include <ArduinoJson.h>
+#include "FS.h"
+#include "FFat.h"
+
 #include "PinConfig.h"
-#include "WManager.h"
 #include "Display.h"
+#include "SerialConfig.h"
+
+#define FORMAT_ON_FAIL true
+#define PARAM_FILE "/config.json"
 
 TaskHandle_t Task1;
 
+String ssid;
+String wifiPassword;
+String switchStr;
+String lnurl;
+
 String payloadStr;
-bool paid;
-byte testState = 0;
-extern char serverFull[120];
-extern int relayPin;
 String lnbitsServer;
 String deviceId;
+bool paid;
+byte testState = 0;
+bool inConfigMode = false;
+// int relayPin;
 
 // Buttons
 OneButton leftButton(PIN_BUTTON_1, true);
@@ -22,29 +35,42 @@ WebSocketsClient webSocket;
 
 void setup()
 {
+  Serial.setRxBufferSize(1024);
   Serial.begin(115200);
+
+  int timer = 0;
 
   pinMode(PIN_POWER_ON, OUTPUT);
   digitalWrite(PIN_POWER_ON, HIGH);
 
-  initScreen();
+  initDisplay();
   startupScreen();
-  init_WifiManager();
 
-  lnbitsServer = String(serverFull).substring(5, String(serverFull).length() - 33);
-  deviceId = String(serverFull).substring(String(serverFull).length() - 22);
-  Serial.print("lnbitsServer: ");
-  Serial.println(lnbitsServer);
-  Serial.print("deviceId: ");
-  Serial.println(deviceId);
+  FFat.begin(FORMAT_ON_FAIL);
+  readFiles(); // get the saved details and store in global variables
 
-  Serial.println(lnbitsServer + "/api/v1/ws/" + deviceId);
+  WiFi.begin(ssid.c_str(), wifiPassword.c_str());
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED && timer < 16000)
+  {
+    delay(1000);
+    Serial.print(".");
+    timer = timer + 1000;
+    if (timer > 15000)
+    {
+      Serial.println("");
+      configMode();
+    }
+  }
+  Serial.println("");
+
   webSocket.beginSSL(lnbitsServer, 443, "/api/v1/ws/" + deviceId);
   webSocket.onEvent(webSocketEvent);
   webSocket.setReconnectInterval(1000);
 
+  leftButton.setPressTicks(3000);
   leftButton.attachClick(testMode);
-
+  leftButton.attachLongPressStart(configMode);
   rightButton.attachClick(showHelp);
 
   xTaskCreatePinnedToCore(
@@ -63,7 +89,6 @@ void Task1code(void *pvParameters)
   {
     leftButton.tick();
     rightButton.tick();
-    wifiManagerProcess();
   }
 }
 
@@ -111,38 +136,89 @@ String getValue(String data, char separator, int index)
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
+void readFiles()
+{
+  File paramFile = FFat.open(PARAM_FILE, "r");
+  if (paramFile)
+  {
+    StaticJsonDocument<1500> doc;
+    DeserializationError error = deserializeJson(doc, paramFile.readString());
+
+    const JsonObject maRoot0 = doc[0];
+    const char *maRoot0Char = maRoot0["value"];
+    ssid = maRoot0Char;
+    Serial.println("SSID: " + ssid);
+
+    const JsonObject maRoot1 = doc[1];
+    const char *maRoot1Char = maRoot1["value"];
+    wifiPassword = maRoot1Char;
+    Serial.println("Wifi pass: " + wifiPassword);
+
+    const JsonObject maRoot2 = doc[2];
+    const char *maRoot2Char = maRoot2["value"];
+    switchStr = maRoot2Char;
+    lnbitsServer = switchStr.substring(5, switchStr.length() - 33);
+    deviceId = switchStr.substring(switchStr.length() - 22);
+
+    Serial.println("Socket: " + switchStr);
+    Serial.println("LNbits server: " + lnbitsServer);
+    Serial.println("Switch device ID: " + deviceId);
+
+    const JsonObject maRoot3 = doc[3];
+    const char *maRoot3Char = maRoot3["value"];
+    lnurl = maRoot3Char;
+    Serial.println("LNURL: " + lnurl);
+  }
+  else
+  {
+    Serial.println("Config file not found");
+  }
+  paramFile.close();
+}
+
 //////////////////WEBSOCKET///////////////////
 
 void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 {
-  switch (type)
+  if (inConfigMode == false)
   {
-  case WStype_DISCONNECTED:
-    Serial.printf("[WSc] Disconnected!\n");
-    break;
-  case WStype_CONNECTED:
-  {
-    Serial.printf("[WSc] Connected to url: %s\n", payload);
+    switch (type)
+    {
+    case WStype_DISCONNECTED:
+      Serial.println("WebSocket disconnected!");
+      break;
+    case WStype_CONNECTED:
+    {
+      Serial.printf("WebSocket connected to url: %s\n", payload);
 
-    // send message to server when Connected
-    webSocket.sendTXT("Connected");
-  }
-  break;
-  case WStype_TEXT:
-    payloadStr = (char *)payload;
-    paid = true;
-  case WStype_ERROR:
-  case WStype_FRAGMENT_TEXT_START:
-  case WStype_FRAGMENT_BIN_START:
-  case WStype_FRAGMENT:
-  case WStype_FRAGMENT_FIN:
+      // send message to server when Connected
+      webSocket.sendTXT("Connected");
+    }
     break;
+    case WStype_TEXT:
+      payloadStr = (char *)payload;
+      paid = true;
+    case WStype_ERROR:
+    case WStype_FRAGMENT_TEXT_START:
+    case WStype_FRAGMENT_BIN_START:
+    case WStype_FRAGMENT:
+    case WStype_FRAGMENT_FIN:
+      break;
+    }
   }
+}
+
+void configMode()
+{
+  inConfigMode = true;
+  Serial.println("Config mode triggered");
+  configModeScreen();
+  configOverSerialPort();
 }
 
 void testMode()
 {
-  pinMode(relayPin, OUTPUT);
+  // pinMode(relayPin, OUTPUT);
   switch (testState)
   {
   case 0:
@@ -150,30 +226,34 @@ void testMode()
     testState++;
     break;
   case 1:
-    showQRScreen();
+    configModeScreen();
     testState++;
     break;
   case 2:
-    stepOneScreen();
+    showQRScreen();
     testState++;
     break;
   case 3:
-    stepTwoScreen();
+    stepOneScreen();
     testState++;
     break;
   case 4:
-    stepThreeScreen();
+    stepTwoScreen();
     testState++;
     break;
   case 5:
-    switchedOnScreen();
-    digitalWrite(relayPin, LOW); // Relay ON
+    stepThreeScreen();
     testState++;
     break;
   case 6:
+    switchedOnScreen();
+    // digitalWrite(relayPin, LOW); // Relay ON
+    testState++;
+    break;
+  case 7:
     thankYouScreen();
-    digitalWrite(relayPin, HIGH); // Relay OFF
-    testState = 0;                // Reset state
+    // digitalWrite(relayPin, HIGH); // Relay OFF
+    testState = 0; // Reset state
     break;
   }
 }
