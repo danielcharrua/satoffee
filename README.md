@@ -2,29 +2,56 @@
 
 ![Satoffee photo](./img/satoffee.jpg)
 
-[👉 Project article (Spanish)](https://danielpcostas.dev/satoffee-lightning-coffee/)
+## Project guide
 
-## Install instructions
+- [🇬🇧 English](https://danielpcostas.dev/satoffee-lightning-coffee/)
+- [🇪🇸 Spanish](https://danielpcostas.dev/satoffee-lightning-coffee/)
+
+## Requirements
+
+- [LILYGO T-Display-S3](https://www.lilygo.cc/products/t-display-s3)
+- 5V Solid State Relay / 1 Way Low
+
+## Flash firmware
+
+### Web installer (recommended)
+
+Go to the [web installer](https://satoffee.danielpcostas.dev/) and follow instructions. This is the easiest way to flash firmware and load config.
+
+#### Web installer troubleshooting
+
+- It works with chrome, chromium, brave.
+- Build errors > If during firmware flash upload stops, it's recommended to enter the board in boot mode. Unplug cable, hold right bottom button and then plug cable. Try again programming.
+
+### Manual flashing
 
 - Install [Arduino IDE](https://www.arduino.cc/en/software)
 - Install ESP32 boards, using [boards manager](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html#installing-using-boards-manager)
-
-![Boards manager](https://user-images.githubusercontent.com/33088785/161862832-1269a12e-16ce-427c-9a92-df3ee573a1fb.png)
-
 - Download this repo
-- Copy these [libraries](./libraries) into your Arduino install "libraries" folder
+- Copy the [libraries](./libraries) into your Arduino install "libraries" folder
 - Open [satoffee.ino](./satoffee/satoffee.ino) file in the Arduino IDE
-- Change these with your own values
-
-```c
-String ssid = "your-ssid";
-String wifiPassword = "your-wifi-password";
-String lnbitsServer = "legend.lnbits.com";
-String deviceId = "device-id";
-String device_lnurlp = "lightning:LNURL...";
-```
-
-- Select the correct ESP32 board from tools>board
+- Select the correct ESP32 board from tools > board. Please refer to [T-Display-S3](https://github.com/Xinyuan-LilyGO/T-Display-S3) to set the correct settings of the ESP32. The only difference is on `Partition Scheme`, please select `16M Flash (3MB APP/9.9MB FATFS)`
 - Upload to device
 
-Project based on the [bitcoinswitch](https://github.com/lnbits/bitcoinswitch) from Ben Arc.
+## Configuration
+
+After flashing the firmware and starting the Satoffee for the first time it will enter on `serial config mode` automatically, please go to the [web installer](https://satoffee.danielpcostas.dev/) and follow step 2 for loading config values
+
+### Buttons
+
+#### Left button
+
+- One click → test screen mode (will loop all screens, keep clicking).
+- Hold 5 seconds → enter serial config mode.
+
+#### Right button
+
+- One Click → show help (will loop help screens)
+
+## Aknowledgement
+
+This project use bits from [bitcoinswitch](https://github.com/lnbits/bitcoinswitch)
+
+## Donations/contributions
+
+If you would like to contribute and help dev team with this project you can send a donation to the following LN address ⚡<danielpcostas@getalby.com>⚡
