@@ -9,6 +9,7 @@
 
 ## Requirements
 
+- Bosch Tassimo 1202 coffee maker
 - [LILYGO T-Display-S3](https://www.lilygo.cc/products/t-display-s3)
 - 5V Solid State Relay / 1 Way Low
 - JST-SH 1.0MM connectors, 4P, 100MM
