@@ -30,7 +30,7 @@ void startupScreen()
   tft.drawString("FF", x + 5, y + 15, GFXFF);
   tft.drawString("EE", x + 5, y + 65, GFXFF);
   tft.setTextSize(2);
-  tft.drawString("v0.1", x + 3, y + 115, GFXFF);
+  tft.drawString("v1.0.0", x + 3, y + 115, GFXFF);
   tft.drawString("@danielpcostas", x + 1, y + 135, GFXFF);
 }
 
