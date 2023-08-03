@@ -70,12 +70,14 @@ After flashing the firmware and starting the Satoffee for the first time it will
 
 #### Right button
 
-- One Click → show help (will loop help screens)
+- One click → show help (will loop help screens)
 
 ## Aknowledgement
 
-This project use bits from [bitcoinswitch](https://github.com/lnbits/bitcoinswitch)
+This project use bits from [bitcoinswitch](https://github.com/lnbits/bitcoinswitch) from Ben Arc.
 
 ## Donations/contributions
 
-If you would like to contribute and help dev team with this project you can send a donation to the following LN address ⚡<danielpcostas@getalby.com>⚡
+If you would like to contribute and help dev team with this project you can send a donation to the following LN address:
+
+⚡<danielpcostas@getalby.com>⚡
