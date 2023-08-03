@@ -8,7 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 int x = 85;
 int y = 160;
 
-extern char lnurl[200];
+extern String lnurl;
 char *lightningPrefix = "lightning:";
 
 void initDisplay()
@@ -149,7 +149,7 @@ void thankYouScreen()
 void showQRScreen()
 {
   String qrCodeData;
-  qrCodeData = strcat(lightningPrefix, lnurl);
+  qrCodeData = strcat(lightningPrefix, lnurl.c_str());
   tft.setTextDatum(ML_DATUM);
   tft.fillScreen(TFT_WHITE);
   tft.setTextSize(3);
