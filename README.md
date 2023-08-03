@@ -35,12 +35,26 @@ Go to the [web installer](https://satoffee.danielpcostas.dev/) and follow instru
 ### Manual flashing
 
 - Install [Arduino IDE](https://www.arduino.cc/en/software)
-- Install ESP32 boards, using [boards manager](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html#installing-using-boards-manager)
+- Install ESP32 boards, using [boards manager](https://github.com/espressif/arduino-esp32/releases/download/2.0.9/esp32-2.0.9.zip)
 - Download this repo
-- Copy the [libraries](./libraries) into your Arduino install "libraries" folder
+- Download and install the libraries into your Arduino install "libraries" folder (see table below)
 - Open [satoffee.ino](./satoffee/satoffee.ino) file in the Arduino IDE
 - Select the correct ESP32 board from tools > board. Please refer to [T-Display-S3](https://github.com/Xinyuan-LilyGO/T-Display-S3) to set the correct settings of the ESP32. The only difference is on `Partition Scheme`, please select `16M Flash (3MB APP/9.9MB FATFS)`
-- Upload to device
+- Compile and upload to device
+
+| Used library     | Version | Link  |
+|:-----------------|:--------|:------|
+| WiFi             | 2.0.0   | Included in ESP32 boards manager |
+| WiFiClientSecure | 2.0.0   | Included in ESP32 boards manager |
+| FS               | 2.0.0   | Included in ESP32 boards manager |
+| FFat             | 2.0.0   | Included in ESP32 boards manager |
+| SPI              | 2.0.0   | Included in ESP32 boards manager |
+| SPIFFS           | 2.0.0   | Included in ESP32 boards manager |
+| WebSockets       | 2.3.6   | [link](https://github.com/Links2004/arduinoWebSockets/tree/2.3.6) |
+| OneButton        | 2.0.4   | [link](https://github.com/mathertel/OneButton/tree/2.0.4) |
+| ArduinoJson      | 6.19.0  | [link](https://github.com/bblanchon/ArduinoJson/tree/v6.19.0) |
+| QRCode           | 0.0.1   | [link](https://github.com/ricmoo/QRCode/tree/v0.0.1) |
+| TFT_eSPI         | 2.5.0   | [link](./libraries/TFT_eSPI.zip) |
 
 ## Configuration
 
