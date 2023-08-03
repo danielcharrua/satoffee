@@ -11,6 +11,15 @@
 
 - [LILYGO T-Display-S3](https://www.lilygo.cc/products/t-display-s3)
 - 5V Solid State Relay / 1 Way Low
+- JST-SH 1.0MM connectors, 4P, 100MM
+
+## Relay connection
+
+The LILYGO T-Display-S3 has a JST-SH connector as shown on the image below. Place the connector and wire the relay.
+
+Remember that you can modify this setup and use your own pins by connecting `+3V`, `GND` and a `GPIO` to the relay.
+
+![Satoffee replay connection](./img/satoffee-relay-connection.jpg)
 
 ## Flash firmware
 
