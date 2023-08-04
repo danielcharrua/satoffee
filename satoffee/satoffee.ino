@@ -17,7 +17,9 @@ TaskHandle_t Task1;
 String ssid;
 String wifiPassword;
 String switchStr;
-String lnurl;
+const char *lightningPrefix = "lightning:";
+const char *lnurl;
+char lightning[300];
 
 String payloadStr;
 String lnbitsServer;
@@ -167,7 +169,15 @@ void readFiles()
     const JsonObject maRoot3 = doc[3];
     const char *maRoot3Char = maRoot3["value"];
     lnurl = maRoot3Char;
-    Serial.println("LNURL: " + lnurl);
+
+    // copy values into lightning char
+    strcpy(lightning, lightningPrefix);
+    strcat(lightning, lnurl);
+
+    Serial.print("LNURL: ");
+    Serial.println(lnurl);
+    Serial.print("QR: ");
+    Serial.println(lightning);
   }
   else
   {

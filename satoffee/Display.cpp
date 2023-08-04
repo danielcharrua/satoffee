@@ -8,8 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 int x = 85;
 int y = 160;
 
-extern String lnurl;
-char *lightningPrefix = "lightning:";
+extern char lightning[];
 
 void initDisplay()
 {
@@ -148,8 +147,6 @@ void thankYouScreen()
 // Show QR
 void showQRScreen()
 {
-  String qrCodeData;
-  qrCodeData = strcat(lightningPrefix, lnurl.c_str());
   tft.setTextDatum(ML_DATUM);
   tft.fillScreen(TFT_WHITE);
   tft.setTextSize(3);
@@ -163,11 +160,9 @@ void showQRScreen()
   tft.setTextColor(TFT_BLACK);
   tft.drawString("HELP", x + 35, y + 150, GFXFF);
 
-  qrCodeData.toUpperCase();
-  const char *qrDataChar = qrCodeData.c_str();
   QRCode qrcoded;
   uint8_t qrcodeData[qrcode_getBufferSize(20)];
-  qrcode_initText(&qrcoded, qrcodeData, 7, 0, qrDataChar);
+  qrcode_initText(&qrcoded, qrcodeData, 7, 0, lightning);
   for (uint8_t y = 0; y < qrcoded.size; y++)
   {
     // Each horizontal module
