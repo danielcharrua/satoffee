@@ -17,7 +17,7 @@ TaskHandle_t Task1;
 String ssid;
 String wifiPassword;
 String switchStr;
-const char *lightningPrefix = "lightning:";
+const char *lightningPrefix = "LIGHTNING:";
 const char *lnurl;
 char lightning[300];
 
