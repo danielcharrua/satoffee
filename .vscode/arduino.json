@@ -1,9 +1,9 @@
 {
     "board": "esp32:esp32:lilygo_t_display_s3",
-    "port": "/dev/tty.usbmodem14201",
+    "port": "/dev/tty.usbmodem14101",
     "programmer": "esptool",
     "sketch": "satoffee/satoffee.ino",
     "output": "build",
     "configuration": "JTAGAdapter=builtin,LoopCore=1,EventsCore=1,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=dfu,UploadMode=default,PartitionScheme=app3M_fat9M_16MB,DebugLevel=none,EraseFlash=none",
-    "postbuild": "$LOCAL_USER/Library/Arduino15/packages/esp32/tools/esptool_py/4.5.1/esptool --chip esp32s3 merge_bin -o installer/firmware/satoffee-firmware.bin --flash_mode dio --flash_freq 80m --flash_size 16MB 0x0 build/satoffee.ino.bootloader.bin 0x8000 build/satoffee.ino.partitions.bin 0xe000 $LOCAL_USER/Library/Arduino15/packages/esp32/hardware/esp32/2.0.9/tools/partitions/boot_app0.bin 0x10000 build/satoffee.ino.bin"
+    "postbuild": "${PWD:0:20}/Library/Arduino15/packages/esp32/tools/esptool_py/4.5.1/esptool --chip esp32s3 merge_bin -o installer/firmware/satoffee-firmware.bin --flash_mode dio --flash_freq 80m --flash_size 16MB 0x0 build/satoffee.ino.bootloader.bin 0x8000 build/satoffee.ino.partitions.bin 0xe000 ${PWD:0:20}/Library/Arduino15/packages/esp32/hardware/esp32/2.0.9/tools/partitions/boot_app0.bin 0x10000 build/satoffee.ino.bin"
 }

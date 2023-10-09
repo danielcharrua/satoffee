@@ -42,7 +42,7 @@
 
         <h1>SATOFFEE WEB INSTALLER</h1>
 
-        <h2>1- Flash software</h2>
+        <h2 id="flash">1- Flash software</h2>
 
         <ul>
             <li>Connect your Lilygo T-Display-S3 to the USB port on your device</li>
@@ -63,12 +63,14 @@
 
         <h2>2- Load config values</h2>
 
+        <p><i>Important: don't send any commands to the device before entering in "config mode".</i></p>
+
         <ul>
             <li>Connect your Lilygo T-Display-S3 to the USB port on your device</li>
-            <li>Put Satoffee in "Serial config mode"
+            <li>Put Satoffee in <b>"Serial config mode"</b>
                 <ul>
                     <li>If no config values it will start automatically after 15 seconds.</li>
-                    <li>If there are config values start "serial config mode" pressing left button for 5 seconds.</li>
+                    <li>If there are config values start the "serial config mode" pressing left button for 5 seconds.</li>
                 </ul>
             <li>Press the "🔌 Connect" button</li>
             <li>Select your device and connect</li>
@@ -84,35 +86,60 @@
             <button id="write-config-button" onclick="onWriteConfigButtonClick()" disabled>🔥 Write Config</button>
         </div>
 
-        <div class="flex">
-            <div class="inputs">
-                <div>
-                    <label for="ssid">WiFi SSID</label>
-                    <input type="text" name="ssid" id="ssid" placeholder="SSID">
-                </div>
-                <div>
-                    <label for="wifiPassword">WiFi password</label>
-                    <input type="text" name="wifiPassword" id="wifiPassword" placeholder="password">
-                </div>
-
+        <div class="input-wrapper">
+            <div>
+                <label for="ssid">WiFi SSID</label>
+                <input type="text" name="ssid" id="ssid" placeholder="SSID">
             </div>
-            <div class="inputs">
-                <div>
-                    <label for="socket">Device URL (Websocket)</label>
-                    <input type="text" name="socket" id="socket" placeholder="ws://legend.lnbits.com/ap...">
-                </div>
-                <div>
-                    <label for="lnurl">LNURL</label>
-                    <input type="text" name="lnurl" id="lnurl" placeholder="LNURL...">
-                </div>
+            <div>
+                <label for="wifiPassword">WiFi password</label>
+                <input type="text" name="wifiPassword" id="wifiPassword" placeholder="password">
+            </div>
+            <div>
+                <label for="socket">Device URL (Websocket)</label>
+                <input type="text" name="socket" id="socket" placeholder="ws://legend.lnbits.com/ap...">
+            </div>
+            <div>
+                <label for="lnurl">LNURL</label>
+                <input type="text" name="lnurl" id="lnurl" placeholder="LNURL...">
+            </div>
+            <div>
+                <label for="orientation">Screen orientation</label>
+                <select name="orientation" id="orientation">
+                    <option value="">Select orientation</option>
+                    <option value="v">Vertical</option>
+                    <option value="h">Horizontal</option>
+                </select>
+            </div>
+            <div>
+                <label for="theme">Theme (😝 coming soon)</label>
+                <select name="theme" id="theme">
+                    <option value="">Select theme</option>
+                    <option value="satoffee">Coffee machine</option>
+                    <option value="global">General</option>
+                </select>
             </div>
         </div>
 
         <div class="debug-console" id="consoleDebug"></div>
-        <footer>
-            <p>Crafted with caffeine by <a href="https://twitter.com/danielpcostas">@danielpcostas</a></p>
-        </footer>
 
+        <hr>
+
+        <h2>Troubleshoot</h2>
+        <p>If non of the above works, reset board in boot mode and start over.</p>
+            <ul>
+                <li>Connect the board via the USB cable</li>
+                <li>Press and hold the BOOT button</li>
+                <li>While still pressing the BOOT button, press RESET</li>
+                <li>Release the RESET button</li>
+                <li>Release the BOOT button</li>
+                <li><a href="#flash">Go to step 1</a></li>
+            </ul>
+        <img class="center-img" src="./assets/troubleshoot.jpg" />
+
+        <footer>
+            <p>Crafted with caffeine by <a href="https://twitter.com/danielpcostas">@danielpcostas</a> | <a href="https://github.com/danielcharrua/satoffee">Github repo</a></p>
+        </footer>
     </div>
 
     <script>
@@ -121,6 +148,7 @@
         const wifiPassword = document.getElementById('wifiPassword');
         const socket = document.getElementById('socket');
         const lnurl = document.getElementById('lnurl');
+        const orientation = document.getElementById('orientation');
 
         let config = [
             {
@@ -137,6 +165,10 @@
             },
             {
                 "name": "lnurl",
+                "value": ""
+            },
+            {
+                "name": "orientation",
                 "value": ""
             }
         ]
@@ -187,12 +219,14 @@
                 config[1].value = configData[1].value; // wifiPassword
                 config[2].value = configData[2].value; // socket
                 config[3].value = configData[3].value; // lnurl
+                config[4].value = configData[4].value; // orientation
 
                 // Fill fields
                 ssid.value = config[0].value;
                 wifiPassword.value = config[1].value;
                 socket.value = config[2].value;
                 lnurl.value = config[3].value;
+                orientation.value = config[4].value;
 
                 console.log(config);
             }
@@ -247,9 +281,11 @@
             config[3].value = event.target.value;
         });
 
+        orientation.addEventListener("change", (event) => {
+            config[4].value = event.target.value;
+        });
+
     </script>
-    <!-- split -->
 
 </body>
-
 </html>

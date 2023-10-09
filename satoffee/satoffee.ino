@@ -19,6 +19,7 @@ String wifiPassword;
 String switchStr;
 const char *lightningPrefix = "LIGHTNING:";
 const char *lnurl;
+String orientation;
 char lightning[300];
 
 String payloadStr;
@@ -45,11 +46,11 @@ void setup()
   pinMode(PIN_POWER_ON, OUTPUT);
   digitalWrite(PIN_POWER_ON, HIGH);
 
-  initDisplay();
-  startupScreen();
-
   FFat.begin(FORMAT_ON_FAIL);
   readFiles(); // get the saved details and store in global variables
+
+  initDisplay();
+  startupScreen();
 
   WiFi.begin(ssid.c_str(), wifiPassword.c_str());
   Serial.print("Connecting to WiFi");
@@ -178,6 +179,11 @@ void readFiles()
     Serial.println(lnurl);
     Serial.print("QR: ");
     Serial.println(lightning);
+
+    const JsonObject maRoot4 = doc[4];
+    const char *maRoot4Char = maRoot4["value"];
+    orientation = maRoot4Char;
+    Serial.println("Screen orientation: " + orientation);
   }
   else
   {
