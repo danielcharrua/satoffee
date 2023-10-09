@@ -31,7 +31,7 @@ Go to the [web installer](https://satoffee.danielpcostas.dev/) and follow instru
 #### Web installer troubleshooting
 
 - It works with chrome, chromium, brave.
-- Build errors > If during firmware flash upload stops, it's recommended to enter the board in boot mode. Unplug cable, hold right bottom button and then plug cable. Try again programming.
+- Build errors > If during firmware flash upload stops, it's recommended to enter the board in boot mode. [Follow troubleshoot steps here](https://satoffee.danielpcostas.dev#troubleshoot).
 
 ### Manual flashing
 
