@@ -39,13 +39,13 @@ void startupScreen()
     tft.drawString("FF", x + 5, y + 15, GFXFF);
     tft.drawString("EE", x + 5, y + 65, GFXFF);
     tft.setTextSize(2);
-    tft.drawString("v1.1.0", x + 3, y + 115, GFXFF);
+    tft.drawString("v1.1.1", x + 3, y + 115, GFXFF);
     tft.drawString("@danielpcostas", x + 1, y + 135, GFXFF);
   } else {
     tft.setTextSize(6);
     tft.drawString("SATOFFEE", x + 5, y - 15, GFXFF);
     tft.setTextSize(2);
-    tft.drawString("v1.1.0", x, y + 40, GFXFF);
+    tft.drawString("v1.1.1", x, y + 40, GFXFF);
     tft.drawString("@danielpcostas", x, y + 60, GFXFF);
   }
 }
@@ -226,7 +226,7 @@ void showQRScreen()
   tft.setTextColor(TFT_WHITE);
 
   if (orientation == "v"){
-    tft.fillRect(15, 165, 140, 135, TFT_BLACK);
+    tft.fillRect(15, 168, 140, 132, TFT_BLACK);
     tft.drawString("COFFEE", x - 55, y + 40, GFXFF);
     tft.drawString("FOR", x - 55, y + 70, GFXFF);
     tft.drawString("SATS", x - 55, y + 100, GFXFF);
@@ -234,7 +234,7 @@ void showQRScreen()
     tft.setTextColor(TFT_BLACK);
     tft.drawString("HELP", x + 35, y + 150, GFXFF);
   } else {
-    tft.fillRect(165, 15, 140, 135, TFT_BLACK);
+    tft.fillRect(168, 18, 140, 135, TFT_BLACK);
     tft.drawString("COFFEE", x + 20, y - 30, GFXFF);
     tft.drawString("FOR", x + 20, y, GFXFF);
     tft.drawString("SATS", x + 20, y + 30, GFXFF);
@@ -245,7 +245,8 @@ void showQRScreen()
 
   QRCode qrcoded;
   uint8_t qrcodeData[qrcode_getBufferSize(20)];
-  qrcode_initText(&qrcoded, qrcodeData, 7, 0, lightning);
+  qrcode_initText(&qrcoded, qrcodeData, 8, 0, lightning);
+
   for (uint8_t y = 0; y < qrcoded.size; y++)
   {
     // Each horizontal module
@@ -253,11 +254,11 @@ void showQRScreen()
     {
       if (qrcode_getModule(&qrcoded, x, y))
       {
-          tft.fillRect(17 + 3 * x, 15 + 3 * y, 3, 3, TFT_BLACK);
+          tft.fillRect(12 + 3 * x, 12 + 3 * y, 3, 3, TFT_BLACK);
       }
       else
       {
-          tft.fillRect(17 + 3 * x, 15 + 3 * y, 3, 3, TFT_WHITE);
+          tft.fillRect(12 + 3 * x, 12 + 3 * y, 3, 3, TFT_WHITE);
       }
     }
   }

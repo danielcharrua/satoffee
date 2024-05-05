@@ -1,6 +1,6 @@
 {
     "board": "esp32:esp32:lilygo_t_display_s3",
-    "port": "/dev/tty.usbmodem14101",
+    "port": "/dev/tty.usbmodem14201",
     "programmer": "esptool",
     "sketch": "satoffee/satoffee.ino",
     "output": "build",
